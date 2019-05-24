@@ -172,7 +172,7 @@ public class MyRunner implements CommandLineRunner {
             throw new BatchException("La performance du commercial est incorrecte : " + commercialFields[6] + " ");
         }
 
-
+        //création du commercial
         c.setCaAnnuel(ca);
         c.setPerformance(perf);
         employes.add(c);
@@ -187,14 +187,15 @@ public class MyRunner implements CommandLineRunner {
      */
     private void processManager(String ligneManager) throws BatchException {
         //TODO
+        //Vérification du nombre de champs dans un manager
         String[] managerField = ligneManager.split(",");
         if (managerField.length != NB_CHAMPS_MANAGER){
             throw new BatchException("La ligne manager ne contient pas " + NB_CHAMPS_MANAGER + " éléments mais " + managerField.length + " ");
         }
+
+        //création du manager
         Manager m= new Manager();
-
         processEmploye(managerField , m);
-
         employes.add(m);
     }
 
@@ -207,13 +208,14 @@ public class MyRunner implements CommandLineRunner {
         //TODO
         String[] technicienField = ligneTechnicien.split(",");
 
+        //Vérification du nombre de champs pour le technicien
         if (technicienField.length != NB_CHAMPS_TECHNICIEN){
             throw new BatchException("La ligne technicien ne contient pas " + NB_CHAMPS_TECHNICIEN + " éléments mais " + technicienField.length + "  ");
         }
         Technicien t = new Technicien();
 
 
-
+        //Vérification du grade
         Integer grade;
         try {
             grade = Integer.parseInt(technicienField[5]);
@@ -221,7 +223,7 @@ public class MyRunner implements CommandLineRunner {
         catch (Exception e){
             throw new BatchException("Le grade du technicien est incorrect : " + technicienField[5] + " ");
         }
-
+        //Vérification du manager du technicien
         Manager manager;
         manager = null;
         if (!technicienField[6].matches(REGEX_MATRICULE_MANAGER)){
@@ -238,7 +240,7 @@ public class MyRunner implements CommandLineRunner {
             throw new BatchException("Le manager de matricule " + technicienField[6] + " n'a pas été trouvé dans le fichier ou en base de données ");
         }
 
-
+        //Vérification que le grade est bien compris entre 1 et 5
         try {
             t.setGrade(grade);
         } catch (TechnicienException e) {
